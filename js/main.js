@@ -72,7 +72,7 @@ view = Backbone.View.extend({
             })[0].diametr)/1000,
             vesKabelya = parseFloat(this.filtered_cable.filter(function(type){
                 return parseInt(type.id) == parseInt(that.$('select[name=sechenie]').val())
-            })[0].massa)/1000;
+            })[0].massa);
             debugger;
         result = 3.14 * lengthsheiki * ( Math.pow(diametrscheki, 2) - Math.pow(diametrsheiki, 2) )/(4 * Math.pow(diametr, 2));
         result_barabans = Math.ceil(parseInt(this.$('input[name=metrs]').val()) / result );
