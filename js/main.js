@@ -23,6 +23,7 @@ view = Backbone.View.extend({
         this.filtered_barabans = barabansDB.filter(function(type){return type.id == baraban_type })[0];
         this.changeCableMark();
         this.changeBarabanMark();
+        this.$('select[name=cable_mark]').chosen();
     },
     changeCableMark: function(){ 
         var cable_type = this.$('select[name=cable_mark]').val(),
