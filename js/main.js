@@ -9,9 +9,8 @@ view = Backbone.View.extend({
     events:{
         'submit': 'submit',
         'change select[name=cable_mark]': 'changeCableMark',
-        'change select[name=sechenie]': 'calculate',
-        'change selectinput[name=metrs]': 'calculate',
-        'change select[name=baraban]': 'changeBarabanMark'
+        'change select[name=baraban]': 'changeBarabanMark',
+        'click .js-show-additional_data': 'showAdditionalData'
     },
     initialize: function(){
         var cable_type = this.$('select[name=cable_mark]').val(),
@@ -25,6 +24,9 @@ view = Backbone.View.extend({
         this.changeBarabanMark();
         this.$('select[name=cable_mark]').chosen();
     },
+    showAdditionalData: function(){
+        this.$('.additional_data').show(500);
+    },
     changeCableMark: function(){ 
         var cable_type = this.$('select[name=cable_mark]').val(),
             that = this;
@@ -34,7 +36,6 @@ view = Backbone.View.extend({
         $.each(this.filtered_cable, function(val, el){
             that.$('select[name=sechenie]').append('<option value="' + el.id + '">' + el.sechenie + '</option>');             
         });
-        this.calculate();
     },
     changeBarabanMark: function(){
         debugger;
@@ -46,7 +47,6 @@ view = Backbone.View.extend({
         this.$('input[name=diametrsheiki]').val(this.filtered_barabans.diametr_sheiki);
         this.$('input[name=obembarabana]').val(this.filtered_barabans.obem_barabana);
         this.$('input[name=vesbarabana]').val(this.filtered_barabans.ves_barabana);
-        this.calculate();
     },
     render: function(){
         var that = this;
@@ -78,14 +78,24 @@ view = Backbone.View.extend({
             vesKabelya = parseFloat(this.filtered_cable.filter(function(type){
                 return parseInt(type.id) == parseInt(that.$('select[name=sechenie]').val())
             })[0].massa);
-            debugger;
         result = 3.14 * lengthsheiki * ( Math.pow(diametrscheki, 2) - Math.pow(diametrsheiki, 2) )/(4 * Math.pow(diametr, 2));
         result_barabans = Math.ceil(parseInt(this.$('input[name=metrs]').val()) / result );
-        this.$('#result h1').html("Полная длинна кабеля(L) = " + result + "<br> Количество барабанов = " + result_barabans);
+        /*
+        Для (допустим) NYM 2х2,5 в количестве Х на барабане № Y необходимо: столько то барабанов, общий объем такой-то, общий вес такой-то
+        */
+        /*this.$('#result h1').html("Полная длинна кабеля(L) = " + result + "<br> Количество барабанов = " + result_barabans);
         this.$('#result h1').append("<br>Сумма объемов этих барабанов: " + (result_barabans * this.filtered_barabans.obem_barabana) );
         this.$('#result h1').append("<br>Общий вес барабанов: " + (result_barabans * this.filtered_barabans.ves_barabana) );
         this.$('#result h1').append("<br>Вес кабеля намотанного на барабаны: " + (lenght_kabelya * (vesKabelya / 1000)) + "кг");
         this.$('#result h1').append("<br>Cумма веса барабанов и веса намотанного на него кабеля: " + ((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))) );
+        this.$('#result h1').append("<hr>");*/
+        
+            debugger;
+        var cable_mark = this.$('select[name=cable_mark] option:selected').index()==0 ? this.$('select[name=cable_mark] option:eq(1)').html() : this.$('select[name=cable_mark] option:selected').html() ;
+            result_text = "Для " + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + " в количестве ";
+            result_text += lenght_kabelya + " на барабане № " + this.$('select[name=baraban] option:selected').html() + " необходимо: " + result_barabans;
+            result_text +=" барабанов, общий объем " + (result_barabans * this.filtered_barabans.obem_barabana) + ", общий вес " + (lenght_kabelya * (vesKabelya / 1000)) + "кг";
+        this.$('#result h3').html(result_text);
     },
     submit: function(e){
         e.preventDefault();
