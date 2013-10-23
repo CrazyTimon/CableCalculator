@@ -7,7 +7,7 @@ calcCollection = Backbone.Collection.extend({
 
 view = Backbone.View.extend({
     events:{
-        'submit': 'submit',
+        'click .js-submit__btn': 'submit',
         'change select[name=cable_mark]': 'changeCableMark',
         'change select[name=baraban]': 'changeBarabanMark',
         'click .js-show-additional_data': 'showAdditionalData'
@@ -22,7 +22,7 @@ view = Backbone.View.extend({
         this.filtered_barabans = barabansDB.filter(function(type){return type.id == baraban_type })[0];
         this.changeCableMark();
         this.changeBarabanMark();
-        this.$('select[name=cable_mark]').chosen();
+        this.$('.js-chosen').chosen({disable_search_threshold: 5});
     },
     showAdditionalData: function(){
         this.$('.additional_data').show(500);
@@ -38,7 +38,6 @@ view = Backbone.View.extend({
         });
     },
     changeBarabanMark: function(){
-        debugger;
         var baraban_type = this.$('select[name=baraban]').val(),
             that = this;
         this.filtered_barabans = barabansDB.filter(function(type){return type.id == baraban_type })[0];
@@ -56,16 +55,6 @@ view = Backbone.View.extend({
         });
     },
     calculate: function(){
-        /*
-         Николай:  ок, теперь надо вывести сумму объемов этих барабанов
-         Отправлено в 13:46, среда
-         я:  как посчитать?
-        объем*барабан
-        точнее умножить на кол-вобарабанов
-         Николай:  да
-         я:  гуд
-         Николай:  так же и общий вес барабанов + вес намотанного на них кабеля
-        */
         var result = 0,
             that = this,
             lenght_kabelya = this.$('input[name=metrs]').val(),
@@ -90,12 +79,12 @@ view = Backbone.View.extend({
         this.$('#result h1').append("<br>Cумма веса барабанов и веса намотанного на него кабеля: " + ((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))) );
         this.$('#result h1').append("<hr>");*/
         
-            debugger;
         var cable_mark = this.$('select[name=cable_mark] option:selected').index()==0 ? this.$('select[name=cable_mark] option:eq(1)').html() : this.$('select[name=cable_mark] option:selected').html() ;
-            result_text = "Для " + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + " в количестве ";
-            result_text += lenght_kabelya + " на барабане № " + this.$('select[name=baraban] option:selected').html() + " необходимо:";
-            result_text += "<ul><li>" + result_barabans + " барабанов</li><li> общий объем " + (result_barabans * this.filtered_barabans.obem_barabana) + "</li><li>общий вес " + (lenght_kabelya * (vesKabelya / 1000)) + "кг</li></ul>";
-        this.$('#result h3').html(result_text);
+            result_text = "<br>Для <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> в количестве <b>";
+            result_text += lenght_kabelya + "</b><br> на барабане <b>№ " + this.$('select[name=baraban] option:selected').html() + "</b> необходимо:";
+            result_text += "<ul><li><b>" + result_barabans + "</b> барабанов</li><li> общий объем <b>" + (result_barabans * this.filtered_barabans.obem_barabana) + "</b></li><li>общий вес <b>" + (lenght_kabelya * (vesKabelya / 1000)) + "</b>кг</li></ul>";
+        this.$('#result').html(result_text);
+        this.$('#result').show(300);
     },
     submit: function(e){
         e.preventDefault();
@@ -104,33 +93,5 @@ view = Backbone.View.extend({
 });
 
 $(function() {
-
-var test = new view({el:'#calcForm'});
-    /*
-YM
-NYM
-ВВГЭнг(А)-LS
-КВВГЭнг
-КВВГЭнг
-АВВГнг-LS - 0,6
-ВВГнг-LS - 0,66<
-АВВГнг-LS - 0,66
-    */
-/*   
-5 - Номер барабана (название барабана, которое должен выбирать пользователь)
-500 - Диаметр щеки, мм (Dщ) diametrscheki
-200 - Диаметр шейки, мм (dш)  diametrsheiki
-230 - Длина шейки, мм ( l ) lengthsheiki
-0.08 - Объем барабана, м3 obembarabana
-18 - Вес барабана с обшивкой, кг vesbarabana
-
-L=3,14*l*(D2н - d2ш)/4*D2
-где:
-L - Полная длина кабеля или провода, (м) (В калькуляторе это будет забивать пользователь)
-l - длина шейки барабана, (мм) 
-Dн - диаметр по намотанному кабелю на барабане, (мм) (В нашем калькуляторе Dн будет равен Dщ)
-dш - диаметр шейки барабана, (мм) 
-D - диаметр кабеля, (мм)
-
-*/
+    var test = new view({el:'#calcForm'});
 });
