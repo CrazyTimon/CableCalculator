@@ -51,14 +51,13 @@ view = Backbone.View.extend({
     calculate: function(){
         var result = 0,
             that = this,
-            lengthsheiki = parseInt(this.$('input[name=lengthsheiki]').val()),
-            diametrscheki = parseInt(this.$('input[name=diametrscheki]').val()),
-            diametrsheiki = parseInt(this.$('input[name=diametrsheiki]').val()),
+            lengthsheiki = parseInt(this.$('input[name=lengthsheiki]').val())/1000,
+            diametrscheki = parseInt(this.$('input[name=diametrscheki]').val())/1000,
+            diametrsheiki = parseInt(this.$('input[name=diametrsheiki]').val())/1000,
             diametr = parseFloat(this.filtered_cable.filter(function(type){
                 return parseInt(type.id) == parseInt(that.$('select[name=sechenie]').val())
-            })[0].diametr);
+            })[0].diametr)/1000;
             debugger;
-        console.log(diametr);
         result = 3.14 * lengthsheiki * ( diametrscheki - diametrsheiki )/4 * diametr;
         result_barabans = parseInt(parseInt(this.$('input[name=metrs]').val()) / result );
         this.$('#result h1').html("Полная длинна кабеля(L) = " + result + "<br> Количество барабанов = " + result_barabans);
