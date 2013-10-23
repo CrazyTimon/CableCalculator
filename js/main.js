@@ -93,8 +93,8 @@ view = Backbone.View.extend({
             debugger;
         var cable_mark = this.$('select[name=cable_mark] option:selected').index()==0 ? this.$('select[name=cable_mark] option:eq(1)').html() : this.$('select[name=cable_mark] option:selected').html() ;
             result_text = "Для " + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + " в количестве ";
-            result_text += lenght_kabelya + " на барабане № " + this.$('select[name=baraban] option:selected').html() + " необходимо: " + result_barabans;
-            result_text +=" барабанов, общий объем " + (result_barabans * this.filtered_barabans.obem_barabana) + ", общий вес " + (lenght_kabelya * (vesKabelya / 1000)) + "кг";
+            result_text += lenght_kabelya + " на барабане № " + this.$('select[name=baraban] option:selected').html() + " необходимо:";
+            result_text += "<ul><li>" + result_barabans + " барабанов</li><li> общий объем " + (result_barabans * this.filtered_barabans.obem_barabana) + "</li><li>общий вес " + (lenght_kabelya * (vesKabelya / 1000)) + "кг</li></ul>";
         this.$('#result h3').html(result_text);
     },
     submit: function(e){
