@@ -81,6 +81,7 @@ view = Backbone.View.extend({
         this.$('#result h1').append("<br>Сумма объемов этих барабанов: " + (result_barabans * this.filtered_barabans.obem_barabana) );
         this.$('#result h1').append("<br>Общий вес барабанов: " + (result_barabans * this.filtered_barabans.ves_barabana) );
         this.$('#result h1').append("<br>Вес кабеля намотанного на барабаны: " + (result_barabans * vesKabelya) );
+        this.$('#result h1').append("<br>Cумма веса барабанов и веса намотанного на него кабеля: " + ((result_barabans * this.filtered_barabans.ves_barabana) + (result_barabans * vesKabelya)) );
     },
     submit: function(e){
         e.preventDefault();
