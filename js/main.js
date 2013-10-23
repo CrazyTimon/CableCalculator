@@ -67,6 +67,7 @@ view = Backbone.View.extend({
         */
         var result = 0,
             that = this,
+            lenght_kabelya = this.$('input[name=metrs]').val(),
             lengthsheiki = parseInt(this.$('input[name=lengthsheiki]').val())/1000,
             diametrscheki = parseInt(this.$('input[name=diametrscheki]').val())/1000,
             diametrsheiki = parseInt(this.$('input[name=diametrsheiki]').val())/1000,
@@ -82,7 +83,7 @@ view = Backbone.View.extend({
         this.$('#result h1').html("Полная длинна кабеля(L) = " + result + "<br> Количество барабанов = " + result_barabans);
         this.$('#result h1').append("<br>Сумма объемов этих барабанов: " + (result_barabans * this.filtered_barabans.obem_barabana) );
         this.$('#result h1').append("<br>Общий вес барабанов: " + (result_barabans * this.filtered_barabans.ves_barabana) );
-        this.$('#result h1').append("<br>Вес кабеля намотанного на барабаны: " + (result_barabans * (vesKabelya / 1000)) + "кг");
+        this.$('#result h1').append("<br>Вес кабеля намотанного на барабаны: " + (lenght_kabelya * (vesKabelya / 1000)) + "кг");
         this.$('#result h1').append("<br>Cумма веса барабанов и веса намотанного на него кабеля: " + ((result_barabans * this.filtered_barabans.ves_barabana) + (result_barabans * vesKabelya)/1000) );
     },
     submit: function(e){
