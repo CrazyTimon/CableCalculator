@@ -58,7 +58,7 @@ view = Backbone.View.extend({
                 return parseInt(type.id) == parseInt(that.$('select[name=sechenie]').val())
             })[0].diametr)/1000;
             debugger;
-        result = 3.14 * lengthsheiki * ( diametrscheki - diametrsheiki )/4 * diametr;
+        result = 3.14 * lengthsheiki * ( Math.pow(diametrscheki, 2) - Math.pow(diametrsheiki, 2) )/(4 * Math.pow(diametr, 2));
         result_barabans = parseInt(parseInt(this.$('input[name=metrs]').val()) / result );
         this.$('#result h1').html("Полная длинна кабеля(L) = " + result + "<br> Количество барабанов = " + result_barabans);
     },
