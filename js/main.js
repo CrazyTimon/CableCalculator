@@ -36,6 +36,7 @@ view = Backbone.View.extend({
         $.each(this.filtered_cable, function(val, el){
             that.$('select[name=sechenie]').append('<option value="' + el.id + '">' + el.sechenie + '</option>');             
         });
+        this.$('select[name=sechenie]').chosen('destroy');
         this.$('select[name=sechenie]').chosen({disable_search_threshold: 5});
     },
     changeBarabanMark: function(){
