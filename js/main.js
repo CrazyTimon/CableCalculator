@@ -27,7 +27,7 @@ view = Backbone.View.extend({
     showAdditionalData: function(){
         this.$('.additional_data').show(500);
     },
-    changeCableMark: function(){ 
+    changeCableMark: function(e){ 
         var cable_type = this.$('select[name=cable_mark]').val(),
             that = this;
         this.filtered_cable = calcDB.filter(function(type){return type.mark_id == cable_type });
@@ -36,6 +36,7 @@ view = Backbone.View.extend({
         $.each(this.filtered_cable, function(val, el){
             that.$('select[name=sechenie]').append('<option value="' + el.id + '">' + el.sechenie + '</option>');             
         });
+        this.$('select[name=sechenie]').chosen({disable_search_threshold: 5});
     },
     changeBarabanMark: function(){
         var baraban_type = this.$('select[name=baraban]').val(),
