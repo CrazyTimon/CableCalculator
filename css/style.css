@@ -67,3 +67,15 @@
 .js-show-additional_data{
     display: none;
 }
+
+.additional_data input[type=text]{
+    width: 130px;
+}
+
+.calculator__cable__plugin .hide{
+    display: none !important;
+}
+
+.calculator__cable__plugin .txt_10{
+    font-size: 10px;
+}
