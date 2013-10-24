@@ -1,5 +1,5 @@
 .additional_data{
-    display: none;    
+    display: none;
 }
 
 
@@ -10,6 +10,8 @@
     display: inline-block;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 10px;
+    /*background-image: url(http://subtlepatterns.com/patterns/tiny_grid.png);*/
+    background-image: url(http://www.psdgraphics.com/wp-content/uploads/2013/06/scratched-metal-texture.jpg);
 }
 
 .calculator__cable__plugin td:first-child{
