@@ -2,6 +2,7 @@
     display: none;    
 }
 
+
 .calculator__cable__plugin{
     border: 1px solid gray;
     border-radius: 3px;
@@ -15,7 +16,7 @@
 }
 
 .calculator__cable__plugin td:last-child select,
-.calculator__cable__plugin td:last-child input{
+.calculator__cable__plugin input[type=text]{
     width: 140px;
     border: 1px solid #cccccc;
     border-radius: 3px;
@@ -30,7 +31,6 @@
     color: #ffffff;
     background-color: #5cb85c;
     border-color: #4cae4c;
-    display: inline-block;
     padding: 6px 12px;
     margin-bottom: 0;
     font-size: 14px;
@@ -61,5 +61,9 @@
 }
 
 .calculator__cable__plugin #result{
+    display: none;
+}
+
+.js-show-additional_data{
     display: none;
 }
