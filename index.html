@@ -38,6 +38,10 @@
                     <td><input type="text" value="0" name="metrs"></td>
                 </tr>
                 <tr>
+                    <td>считать без учета барабанов</td>
+                    <td><input type="checkbox" name="without_baraban"></td>
+                </tr>
+                <tr>
                     <td>Номер барабана</td>
                     <td>
                         <select data-placeholder="Введите номер барабана" class="js-chosen" name="baraban">
@@ -49,12 +53,16 @@
                     </td>
                 </tr>
             </table>
+            <div class="txt_center">                
+                <input type="button" class="js-submit__btn" value="расчитать">
+            </div>
             <div id="result"></div>
             <div class="txt_center">  
                 <input type="button" class="js-show-additional_data" value="подробные сведения">
             </div>
             <div class="additional_data">
-                <table>
+            </div>
+                <table class="hide">
                 <tr class="hide">
                     <td>
                         Диаметр щеки, мм (Dщ)
@@ -87,7 +95,7 @@
                         
                     </td>
                 </tr>
-                <tr class="txt_10">
+                <tr class="hide">
                     <td>
                         Объем барабана
                     </td>
@@ -98,7 +106,7 @@
                         м3
                     </td>
                 </tr>
-                <tr class="txt_10">
+                <tr class="hide">
                     <td>
                         Вес барабана с обшивкойг
                     </td>
@@ -109,7 +117,7 @@
                         к
                     </td>
                 </tr>
-                <tr class="txt_10">
+                <tr class="hide">
                     <td>
                         Диаметр кабеля
                     </td>
@@ -120,7 +128,7 @@
                         мм
                     </td>
                 </tr>
-                <tr class="txt_10">
+                <tr class="hide">
                     <td>
                         Вес 1м кабеля
                     </td>
@@ -132,9 +140,6 @@
                     </td>
                 </tr>
                 </table>
-            </div>
-            <div class="txt_center">                
-                <input type="button" class="js-submit__btn" value="расчитать">
             </div>
         </form>
     </div>
