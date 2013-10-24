@@ -84,8 +84,8 @@ view = Backbone.View.extend({
         var cable_mark = this.$('select[name=cable_mark] option:selected').index()==0 ? this.$('select[name=cable_mark] option:eq(1)').html() : this.$('select[name=cable_mark] option:selected').html() ;
             result_text = "<br>Для <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> в количестве <b>";
             result_text += lenght_kabelya + "</b><br> на барабане <b>№ " + this.$('select[name=baraban] option:selected').html() + "</b> необходимо:";
-            result_text += "<ul><li><b>" + result_barabans + "</b> барабанов</li><li> общий объем <b>" + (result_barabans * this.filtered_barabans.obem_barabana) + " м³</b></li>";
-            result_text += "<li>общий вес <b>" + ((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))) + " кг</b></li></ul>";
+            result_text += "<ul><li><b>" + result_barabans + "</b> барабанов</li><li> общий объем <b>" + ((result_barabans * this.filtered_barabans.obem_barabana).toFixed(1)) + " м³</b></li>";
+            result_text += "<li>общий вес <b>" + (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0)) + " кг</b></li></ul>";
         this.$('#result').html(result_text);
         this.$('#result').show(300);
         this.$('.js-show-additional_data').show(300);
