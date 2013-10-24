@@ -100,6 +100,8 @@ view = Backbone.View.extend({
             result_text += lenght_kabelya + "</b> м <br>будет иметь массу <b>" + (lenght_kabelya * (vesKabelya / 1000)) + "</b> кг";
             this.$('#result').html(result_text);
             this.$('#result').show(300);
+            this.$('.additional_data').hide();
+            this.$('.js-show-additional_data').hide();
         } else {
             result = 3.14 * lengthsheiki * ( Math.pow(diametrscheki, 2) - Math.pow(diametrsheiki, 2) )/(4 * Math.pow(diametr, 2));
             result_barabans = Math.ceil(parseInt(this.$('input[name=metrs]').val()) / result );
