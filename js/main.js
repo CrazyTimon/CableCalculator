@@ -97,7 +97,8 @@ view = Backbone.View.extend({
         this.$('#result h1').append("<hr>");*/
         if(without_baraban){
             result_text = "Кабеля <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> <br>длинной <b>";
-            result_text += lenght_kabelya + "</b> м <br>будет иметь массу <b>" + (lenght_kabelya * (vesKabelya / 1000)) + "</b> кг";
+            result_text += lenght_kabelya + "</b> м <br>будет иметь массу <b>" + (lenght_kabelya * (vesKabelya / 1000)).toFixed(4) + "</b> кг";
+            result_text += "<br>и диаметр <b>" + diametr.toFixed(4) + "</b> м";
             this.$('#result').html(result_text);
             this.$('#result').show(300);
             this.$('.additional_data').hide();
@@ -118,8 +119,8 @@ view = Backbone.View.extend({
             result_text += "<ul><li> общий объем <b>" + ((result_barabans * this.filtered_barabans.obem_barabana).toFixed(1)) + " м³</b></li>";
             result_text += "<li>общий вес <b>" + (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0)) + " кг</b></li></ul>";
             
-            additionl_result = "<br>Объем барабана <b>" + nomer_barabana + this.$('input[name=obembarabana]').val() + "</b> м3<br>";
-            additionl_result += "Вес барабана № <b>" + nomer_barabana + "</b> с обшивкой <b>" + obshiy_ves + "</b> кг<br>";
+            additionl_result = "<br>Объем барабана № <b>" + nomer_barabana + " " + this.$('input[name=obembarabana]').val() + "</b> м3<br>";
+            additionl_result += "Вес барабана № <b>" + nomer_barabana + "</b> с обшивкой <b>" + this.filtered_barabans.ves_barabana + "</b> кг<br>";
             additionl_result += "Диаметр кабеля <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + " " + (diametr*1000) + "</b> мм<br>";
             additionl_result += "Вес 1м кабеля <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + " " + (vesKabelya / 1000) + "</b> кг<br>";
             this.$('#result').html(result_text);
