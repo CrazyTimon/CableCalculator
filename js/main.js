@@ -1,4 +1,4 @@
-calcModel = Backbone.Model.extend({
+﻿calcModel = Backbone.Model.extend({
 });
 
 calcCollection = Backbone.Collection.extend({
@@ -11,9 +11,29 @@ view = Backbone.View.extend({
         'change select[name=cable_mark]': 'changeCableMark',
         'change select[name=baraban]': 'changeBarabanMark',
         'click .js-show-additional_data': 'showAdditionalData',
-        'change input[name=without_baraban]': 'toggleBaraban'
+        'change input[name=without_baraban]': 'toggleBaraban',
+        'blur input[name=metrs]': 'metrsBlur',
+        'focus input[name=metrs]': 'metrsFocus'
     },
     initialize: function(){
+        
+        var initial_elements = [];
+        _.each(_.uniq(_.pluck(calcDB, "mark_id")), function(el){
+          var bool = true;
+          _.each(calcDB, function(all_el){
+             if(all_el.mark_id==el && bool){initial_elements.push(all_el); bool= false;}
+          })
+        });
+
+        var selectHTML = "";
+        _.each(initial_elements, function(el){
+            selectHTML +='<option value="' + el.mark_id + '">' + el.mark + '</option>'
+        });
+        this.$('select[name=cable_mark]').html(selectHTML);
+        this.$('select[name=cable_mark]:first').prop('selected', true);
+
+        this.$('select[name=cable_mark]').val(calcDB[0].mark_id);
+
         var cable_type = this.$('select[name=cable_mark]').val(),
             baraban_type = this.$('select[name=baraban]').val();
         this.collection = new calcCollection();
@@ -24,6 +44,17 @@ view = Backbone.View.extend({
         this.changeCableMark();
         this.changeBarabanMark();
         this.$('.js-chosen').chosen({disable_search_threshold: 5});
+        this.$('.js-chosen[name=cable_mark]').data().chosen.search_field.attr('placeholder', 'введите первые буквы марки')
+    },
+    metrsBlur: function(){
+        if( this.$('input[name=metrs]').val()==""){
+            this.$('input[name=metrs]').val(0);
+        }
+    },
+    metrsFocus: function(){
+        if( this.$('input[name=metrs]').val()=="0"){
+            this.$('input[name=metrs]').val("");
+        }
     },
     toggleBaraban: function(){
         if(this.$('input[name=without_baraban]').prop('checked')){
@@ -96,9 +127,10 @@ view = Backbone.View.extend({
         this.$('#result h1').append("<br>Cумма веса барабанов и веса намотанного на него кабеля: " + ((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))) );
         this.$('#result h1').append("<hr>");*/
         if(without_baraban){
-            result_text = "Кабеля <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> <br>длинной <b>";
-            result_text += lenght_kabelya + "</b> м <br>будет иметь массу <b>" + (lenght_kabelya * (vesKabelya / 1000)).toFixed(4) + "</b> кг";
-            result_text += "<br>и диаметр <b>" + diametr.toFixed(4) + "</b> м";
+            cable_mark = this.$('select[name=cable_mark] option:selected').html();
+            result_text = "<b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> <br>в количестве: <b style='color: #ef3c39;'>";
+            result_text += lenght_kabelya + " м</b> <br>будет иметь массу: <b style='color: #ef3c39;'>" + (lenght_kabelya * (vesKabelya / 1000)).toFixed(1) + " кг</b>";
+            result_text += "<br>диаметр <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> - <b style='color: #ef3c39;'>" + (diametr.toFixed(4) * 1000) + " мм</b>";
             this.$('#result').html(result_text);
             this.$('#result').show(300);
             this.$('.additional_data').hide();
@@ -112,17 +144,17 @@ view = Backbone.View.extend({
                     return parseInt(type.id) == parseInt(that.$('select[name=sechenie]').val())
                 })[0].massa)/1000);
             obshiy_ves = (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0));
-            cable_mark = this.$('select[name=cable_mark] option:selected').index()==0 ? this.$('select[name=cable_mark] option:eq(1)').html() : this.$('select[name=cable_mark] option:selected').html() ;
-            result_text = "<br>Для <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> в количестве <b>";
-            result_text += lenght_kabelya + "</b> м.<br>необходимо барабанов <b>№ " + this.$('select[name=baraban] option:selected').html() + "</b> : ";
-            result_text += " <b>" + result_barabans + "</b> шт<br>";
-            result_text += "<ul><li> общий объем <b>" + ((result_barabans * this.filtered_barabans.obem_barabana).toFixed(1)) + " м³</b></li>";
-            result_text += "<li>общий вес <b>" + (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0)) + " кг</b></li></ul>";
+            cable_mark = this.$('select[name=cable_mark] option:selected').html();
+            result_text = "<br>Для <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> в количестве:  <b style='color: #ef3c39;'>";
+            result_text += lenght_kabelya + " м</b><br>необходимо барабанов <b>№ " + this.$('select[name=baraban] option:selected').html() + "</b>: ";
+            result_text += "  <b style='color: #ef3c39;'>" + result_barabans + " шт</b><br>";
+            result_text += "<ul><li> общий объем:  <b style='color: #ef3c39;'>" + ((result_barabans * this.filtered_barabans.obem_barabana).toFixed(1)) + " м³</b></li>";
+            result_text += "<li>общий вес:  <b style='color: #ef3c39;'>" + (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0)) + " кг</b></li></ul>";
             
-            additionl_result = "<br>Объем барабана № <b>" + nomer_barabana + " " + this.$('input[name=obembarabana]').val() + "</b> м3<br>";
-            additionl_result += "Вес барабана № <b>" + nomer_barabana + "</b> с обшивкой <b>" + this.filtered_barabans.ves_barabana + "</b> кг<br>";
-            additionl_result += "Диаметр кабеля <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + " " + (diametr*1000) + "</b> мм<br>";
-            additionl_result += "Вес 1м кабеля <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + " " + (vesKabelya / 1000) + "</b> кг<br>";
+            additionl_result = "<br>Объем барабана № <b>" + nomer_barabana + "</b>:  <b style='color: #ef3c39;'>" + this.$('input[name=obembarabana]').val() + " м³</b><br>";
+            additionl_result += "Вес барабана № <b>" + nomer_barabana + "</b> с обшивкой:  <b style='color: #ef3c39;'>" + this.filtered_barabans.ves_barabana + " кг</b><br>";
+            additionl_result += "Диаметр <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b>:  <b style='color: #ef3c39;'>" + (diametr*1000) + " мм</b><br>";
+            additionl_result += "Вес 1м <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b>:  <b style='color: #ef3c39;'>" + (vesKabelya / 1000) + " кг</b><br>";
             this.$('#result').html(result_text);
             this.$('.additional_data').html(additionl_result);
             this.$('#result').show(300);
@@ -136,5 +168,25 @@ view = Backbone.View.extend({
 });
 
 $(function() {
-    var test = new view({el:'#calcForm'});
+    if($('#calcForm').length>0){
+        $.ajax({
+            url: 'http://www.a-kabel.ru/index.php?option=com_hello&view=hello',
+            type: 'GET',
+            beforeSend: function() {
+                // TODO: show your spinner
+                $('#ajaxSpinner').show();
+                $('#calcForm').hide();
+            },
+            complete: function() {
+                // TODO: hide your spinner
+                $('#ajaxSpinner').hide();
+            },
+            success: function(data) {
+                $('#calcForm').show(100, function(){
+                    calcDB = $.parseJSON(data);
+                    var test = new view({el:'#calcForm'});                    
+                });
+            }
+        });
+    }
 });
