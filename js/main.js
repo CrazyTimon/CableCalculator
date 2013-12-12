@@ -83,6 +83,7 @@ view = Backbone.View.extend({
         this.$('select[name=sechenie]').chosen({disable_search_threshold: 5});
     },
     changeBarabanMark: function(){
+        debugger;
         var baraban_type = this.$('select[name=baraban]').val(),
             that = this;
         this.filtered_barabans = barabansDB.filter(function(type){return type.id == baraban_type })[0];
@@ -145,6 +146,25 @@ view = Backbone.View.extend({
                 })[0].massa)/1000);
             obshiy_ves = (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0));
             cable_mark = this.$('select[name=cable_mark] option:selected').html();
+            result_text = "<tr>";
+            result_text +="<td>" + this.$('select[name=baraban] option:selected').html() + "</td>";
+            result_text += "<td>" + result_barabans + "</td>";
+            result_text += "<td>" + ((result_barabans * this.filtered_barabans.obem_barabana).toFixed(1)) + "</td>";
+            result_text += "<td>" + (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0)) + "</td>";
+            result_text += "</tr>";
+            if( parseInt(this.$('input[name=diametrsheiki]').val()) < (25*parseInt(this.$('input[name=diam_kabelya]').val())) ){
+                return result_text;
+            } else {
+                return ''
+            } 
+            /*result = 3.14 * lengthsheiki * ( Math.pow(diametrscheki, 2) - Math.pow(diametrsheiki, 2) )/(4 * Math.pow(diametr, 2));
+            result_barabans = Math.ceil(parseInt(this.$('input[name=metrs]').val()) / result );
+            
+            this.$('input[name=des_kabelya]').val(parseFloat(this.filtered_cable.filter(function(type){
+                    return parseInt(type.id) == parseInt(that.$('select[name=sechenie]').val())
+                })[0].massa)/1000);
+            obshiy_ves = (((result_barabans * this.filtered_barabans.ves_barabana) + (lenght_kabelya * (vesKabelya / 1000))).toFixed(0));
+            cable_mark = this.$('select[name=cable_mark] option:selected').html();
             result_text = "<br>Для <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b> в количестве:  <b style='color: #ef3c39;'>";
             result_text += lenght_kabelya + " м</b><br>необходимо барабанов <b>№ " + this.$('select[name=baraban] option:selected').html() + "</b>: ";
             result_text += "  <b style='color: #ef3c39;'>" + result_barabans + " шт</b><br>";
@@ -155,15 +175,28 @@ view = Backbone.View.extend({
             additionl_result += "Вес барабана № <b>" + nomer_barabana + "</b> с обшивкой:  <b style='color: #ef3c39;'>" + this.filtered_barabans.ves_barabana + " кг</b><br>";
             additionl_result += "Диаметр <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b>:  <b style='color: #ef3c39;'>" + (diametr*1000) + " мм</b><br>";
             additionl_result += "Вес 1м <b>" + cable_mark + " " + this.$('select[name=sechenie] option:selected').html() + "</b>:  <b style='color: #ef3c39;'>" + (vesKabelya / 1000) + " кг</b><br>";
-            this.$('#result').html(result_text);
+            */
+
+            /*this.$('#result').html(result_text);
             this.$('.additional_data').html(additionl_result);
             this.$('#result').show(300);
-            this.$('.js-show-additional_data').show(300);
+            this.$('.js-show-additional_data').show(300);*/
         }
     },
     submit: function(e){
         e.preventDefault();
         this.calculate();
+        var that = this,
+            htmlResult = "<b>" + this.$('select[name=cable_mark] option:selected').html() + " " + this.$('select[name=sechenie] option:selected').html() + "</b> <br>в количестве: <b style='color: #ef3c39;'>" + this.$('input[name=metrs]').val() + " м</b><br>";
+            htmlResult += '<table border="1"><tr><th>№ барабана</th><th>количество барабанов(шт)</th><th>общий объем(м³)</th><th>общий вес(кг)</th></tr>';
+        _.each(this.$('select[name=baraban]>option'), function(el, key){
+            that.$('select[name=baraban]').val($(el).val());
+            that.changeBarabanMark();
+            that.changeCableMark();
+            htmlResult += that.calculate();
+        });
+        this.$('#result').html(htmlResult);
+        this.$('#result').show(300);
     }
 });
 
